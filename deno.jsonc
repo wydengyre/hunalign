@@ -2,6 +2,7 @@
   "importMap": "import_map.json",
   "tasks": {
     "fmt": "deno fmt deno ts",
+    "lint": "deno lint deno ts",
     "test": "deno test --allow-read=. deno"
   }
 }
