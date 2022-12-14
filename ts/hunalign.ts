@@ -1,6 +1,5 @@
 import mkHunalign from "../web/gen/hunalign.js";
 // based on https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/emscripten/index.d.ts
-// should consider moving this into the compilation step
 type Module = {
   callMain: (args: string[]) => void;
   FS: {
