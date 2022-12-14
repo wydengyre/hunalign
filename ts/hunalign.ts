@@ -1,4 +1,4 @@
-import mkHunalign from "../web/gen/hunalign.js";
+import mkHunalign from "../build/hunalign.js";
 // based on https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/emscripten/index.d.ts
 type Module = {
   callMain: (args: string[]) => void;

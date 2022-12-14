@@ -35,7 +35,7 @@ export class DenoHunalign {
   }
 }
 
-const wasmPath = "../web/gen/hunalign.wasm";
+const wasmPath = "../build/hunalign.wasm";
 const dictPath = "../test/hunapertium-eng-fra.dic";
 const frenchPath = "../test/chapitre.sentences.txt";
 const englishPath = "../test/chapter.sentences.txt";
