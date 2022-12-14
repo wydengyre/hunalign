@@ -1,0 +1,38 @@
+<html>
+<body>
+<script type="module">
+   import mkHunalign from "./gen/hunalign.js";
+
+   const dictResp = await fetch("test/hunapertium-eng-fra.dic")
+   const dictBlob = await dictResp.blob();
+   const dictData = await dictBlob.arrayBuffer();
+
+   const [frenchResp, englishResp] = await Promise.all([
+       fetch("test/chapitre.sentences.txt"),
+       fetch("test/chapter.sentences.txt")
+   ]);
+   const [frenchBlob, englishBlob] = await Promise.all([
+       frenchResp.blob(),
+       englishResp.blob()
+   ]);
+   const [frenchData, englishData] = await Promise.all([
+       frenchBlob.arrayBuffer(),
+       englishBlob.arrayBuffer()
+   ]);
+
+   function preRun(module) {
+       module.FS.writeFile("/dictionary", new Uint8Array(dictData));
+       module.FS.writeFile("/source", new Uint8Array(frenchData));
+       module.FS.writeFile("/target", new Uint8Array(englishData));
+   }
+
+   const hunalign = await mkHunalign({ preRun });
+   // console.log(hunalign);
+   const td = new TextDecoder();
+   console.log(td.decode(frenchData));
+   console.log(td.decode(englishData));
+
+   hunalign.callMain(["dictionary", "source", "target"]);
+</script>
+</body>
+</html>

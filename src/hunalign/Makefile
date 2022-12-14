@@ -5,19 +5,20 @@ headers = alignment.h bloom.h bookToMatrix.h cooccurrence.h dictionary.h dicTree
 objects = alignerTool.o alignment.o bloom.o bookToMatrix.o cooccurrence.o cooccurrenceTool.o dictionary.o main.o networkFlow.o oldAlignTest.o trailPostprocessors.o translate.o wordAlignment.o ../utils/stringsAndStreams.o ../utils/argumentsParser.o ../utils/timer.o
 
 SHELL = /bin/bash
-CXX = g++
-CPPFLAGS = -O9 -ffast-math -funroll-loops -I ../include
+CXX = emcc
+CPPFLAGS = -O3 -ffast-math -funroll-loops -I ../include
+EMFLAGS = -sEXPORT_ES6 -sMODULARIZE -s 'EXPORT_NAME="mkHunalign"' -s NO_INVOKE_RUN -s -sEXPORTED_RUNTIME_METHODS=callMain,FS
 LIBS = -lstdc++
 RM = rm -f
 
-hunalign: $(objects)
-	$(CXX) $(CPPFLAGS) $(LIBS) -o hunalign $(objects)
+../../web/gen: $(objects)
+	$(CXX) $(CPPFLAGS) $(EMFLAGS) $(LIBS) -o ../../web/gen/hunalign.js $(objects)
 
 depend:
 	makedepend -Y -s"# DO NOT DELETE THIS LINE -- hunaligndep" $(sources)
 
 clean:
-	$(RM) hunalign $(objects)
+	$(RM) $(objects) ../../web/gen/*
 
 # DO NOT DELETE THIS LINE -- hunaligndep
 
