@@ -1,4 +1,4 @@
-import {Hunalign, Ladder} from "../ts/hunalign.ts";
+import { Hunalign, Ladder } from "../ts/hunalign.ts";
 
 export class DenoHunalign {
   #hunalign: Hunalign;
@@ -15,16 +15,22 @@ export class DenoHunalign {
     return this.#hunalign.run(dictionary, source, target);
   }
 
-  async runWithPaths(dictPath: string, sourcePath: string, targetPath: string): Promise<Ladder> {
+  async runWithPaths(
+    dictPath: string,
+    sourcePath: string,
+    targetPath: string,
+  ): Promise<Ladder> {
     const [dict, source, target] = await Promise.all([
       Deno.readFile(dictPath),
       Deno.readFile(sourcePath),
-      Deno.readFile(targetPath)
+      Deno.readFile(targetPath),
     ]);
     return this.run(dict, source, target);
   }
 
-  static async createWithWasmBinary(wasmBinary: Uint8Array): Promise<DenoHunalign> {
+  static async createWithWasmBinary(
+    wasmBinary: Uint8Array,
+  ): Promise<DenoHunalign> {
     const hunalign = await Hunalign.create(wasmBinary);
     return new DenoHunalign(hunalign);
   }
@@ -34,11 +40,3 @@ export class DenoHunalign {
     return this.createWithWasmBinary(wasmBinary);
   }
 }
-
-const wasmPath = "../build/hunalign.wasm";
-const dictPath = "../test/hunapertium-eng-fra.dic";
-const frenchPath = "../test/chapitre.sentences.txt";
-const englishPath = "../test/chapter.sentences.txt";
-
-const hunalign = await DenoHunalign.createWithWasmPath(wasmPath);
-console.log(await hunalign.runWithPaths(dictPath, frenchPath, englishPath));

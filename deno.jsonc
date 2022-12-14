@@ -1,5 +1,7 @@
 {
+  "importMap": "import_map.json",
   "tasks": {
-    "fmt": "deno fmt deno ts"
+    "fmt": "deno fmt deno ts",
+    "test": "deno test --allow-read=. deno"
   }
 }

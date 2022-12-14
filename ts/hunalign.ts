@@ -42,7 +42,7 @@ export class Hunalign {
       printLog.push(text);
     }
 
-    const module = await mkHunalign({print, wasmBinary});
+    const module = await mkHunalign({ print, wasmBinary });
     return new Hunalign(module, printLog);
   }
 }
