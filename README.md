@@ -18,6 +18,7 @@ What follows are the key modifications:
 
 TODOs:
 - Web directory with tests
+- Optimization
 - Packaging and distribution
 - Build automation
   - Fixed emscripten, etc. versions (maybe Docker)?
