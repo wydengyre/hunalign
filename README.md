@@ -1,4 +1,27 @@
-## The hunalign sentence aligner
+# The hunalign sentence aligner, wasm edition
+
+## Pre-intro: what the fork is this?
+
+This pre-intro describes this fork of hunalign. The remainder of this document is preserved
+from upstream, including any possible inaccuracies.
+
+This is a fork of the hunalign sentence aligner, originally found at https://github.com/danielvarga/hunalign
+
+This fork is designed to compile to wasm for the web, using [emscripten](https://emscripten.org).
+
+What follows are the key modifications:
+
+- The `Makefile` has been altered to use `emcc` and output javascript and wasm.
+- The `ts` directory contains a typescript wrapper module to facilitate use.
+- The `deno` directory contains a Deno module to further facilitate use with the
+  [Deno](https://deno.land) runtime, along with tests.
+
+TODOs:
+- Web directory with tests
+- Packaging and distribution
+- Build automation
+  - Fixed emscripten, etc. versions (maybe Docker)?
+
 
 ### Introduction
 
