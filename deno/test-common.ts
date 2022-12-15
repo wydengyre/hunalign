@@ -1,0 +1,71 @@
+import { fromFileUrl } from "std/path/mod.ts";
+import { Ladder } from "../ts/hunalign.ts";
+import { assertEquals } from "std/testing/asserts.ts";
+
+const DICT_PATH = fromFileUrl(
+  import.meta.resolve("../test/hunapertium-eng-fra.dic"),
+);
+const FRENCH_PATH = fromFileUrl(
+  import.meta.resolve("../test/chapitre.sentences.txt"),
+);
+const ENGLISH_PATH = fromFileUrl(
+  import.meta.resolve("../test/chapter.sentences.txt"),
+);
+export const LADDER_PATH = fromFileUrl(
+  import.meta.resolve("../test/ladder.json"),
+);
+export type TypeOfClassDenoHunalign = {
+  createWithWasmBinary: (
+    wasmBinary: Uint8Array,
+  ) => Promise<TypeOfInstanceDenoHunalign>;
+  createWithWasmPath: (wasmPath: string) => Promise<TypeOfInstanceDenoHunalign>;
+};
+export type TypeOfInstanceDenoHunalign = {
+  run: (
+    dictionary: Uint8Array,
+    source: Uint8Array,
+    target: Uint8Array,
+  ) => Ladder;
+  runWithPaths: (
+    dictPath: string,
+    sourcePath: string,
+    targetPath: string,
+  ) => Promise<Ladder>;
+};
+
+export async function testLadderWithPaths(
+  ClassDenoHunalign: TypeOfClassDenoHunalign,
+  wasmPath: string
+) {
+  const hunalign = await ClassDenoHunalign.createWithWasmPath(wasmPath);
+  const ladder = await hunalign.runWithPaths(
+    DICT_PATH,
+    FRENCH_PATH,
+    ENGLISH_PATH,
+  );
+  assertEquals(ladder, await getExpectedLadder());
+}
+
+export async function testLadderWithData(
+  ClassDenoHunalign: TypeOfClassDenoHunalign,
+  wasmPath: string
+) {
+  const [wasmBinary, dict, french, english] = await Promise.all([
+    wasmPath,
+    DICT_PATH,
+    FRENCH_PATH,
+    ENGLISH_PATH,
+  ].map((path) => Deno.readFile(path)));
+  const hunalign = await ClassDenoHunalign.createWithWasmBinary(wasmBinary);
+  const ladder = hunalign.run(dict, french, english);
+  assertEquals(ladder, await getExpectedLadder());
+}
+
+let expectedLadder: Ladder | null = null;
+async function getExpectedLadder(): Promise<Ladder> {
+  if (expectedLadder !== null) {
+    return expectedLadder;
+  }
+  expectedLadder = JSON.parse(await Deno.readTextFile(LADDER_PATH));
+  return expectedLadder!;
+}

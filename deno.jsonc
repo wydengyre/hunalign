@@ -1,7 +1,7 @@
 {
   "importMap": "import_map.json",
   "tasks": {
-    "bundle": "mkdir -p dist/deno && deno bundle deno/hunalign.ts dist/deno/hunalign.js && cp build/hunalign.wasm dist/deno",
+    "bundle": "mkdir -p dist/deno && deno bundle deno/hunalign.ts dist/deno/hunalign.js",
     "clean": "rm -rf dist/deno",
     "fmt": "deno fmt deno ts",
     "lint": "deno lint deno ts",
