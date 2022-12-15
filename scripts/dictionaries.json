@@ -1,0 +1,20 @@
+[
+  [
+    "english",
+    "spanish",
+    "https://github.com/apertium/apertium-eng-spa/raw/e10760b12058f16f2f91a7292f4fd676dafd7c1e/apertium-eng-spa.spa.dix",
+    "ltBkbaOG7TQ+q2nrmgPodmzllhr8L1Xz2zCX1jo0ij0="
+  ],
+  [
+    "english",
+    "italian",
+    "https://github.com/apertium/apertium-eng-ita/raw/344603aa8c1561c1e33624232609720aab84aeb0/apertium-eng-ita.eng-ita.dix",
+    "LIy5gtw1Qr8VpZw47dEB0CXs5LeIiJrZOUsQEkaGavM="
+  ],
+  [
+    "french",
+    "english",
+    "https://github.com/apertium/apertium-fra-eng/raw/4ffd628f7dfdbe21fbb1cd40384e82adc4239fe6/apertium-fra-eng.fra-eng.dix",
+    "x1NRlbV3gV9Eq0cGtWzurA82AT1MjdEn1zSzNfk61VY="
+  ]
+]
