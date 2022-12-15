@@ -11,16 +11,17 @@ const FRENCH_PATH = fromFileUrl(
 const ENGLISH_PATH = fromFileUrl(
   import.meta.resolve("../test/chapter.sentences.txt"),
 );
-export const LADDER_PATH = fromFileUrl(
+const LADDER_PATH = fromFileUrl(
   import.meta.resolve("../test/ladder.json"),
 );
-export type TypeOfClassDenoHunalign = {
+
+type TypeOfClassDenoHunalign = {
   createWithWasmBinary: (
     wasmBinary: Uint8Array,
   ) => Promise<TypeOfInstanceDenoHunalign>;
   createWithWasmPath: (wasmPath: string) => Promise<TypeOfInstanceDenoHunalign>;
 };
-export type TypeOfInstanceDenoHunalign = {
+type TypeOfInstanceDenoHunalign = {
   run: (
     dictionary: Uint8Array,
     source: Uint8Array,
@@ -33,32 +34,31 @@ export type TypeOfInstanceDenoHunalign = {
   ) => Promise<Ladder>;
 };
 
-export async function testLadderWithPaths(
+export function testsForResources(
   ClassDenoHunalign: TypeOfClassDenoHunalign,
-  wasmPath: string
+  wasmPath: string,
 ) {
-  const hunalign = await ClassDenoHunalign.createWithWasmPath(wasmPath);
-  const ladder = await hunalign.runWithPaths(
-    DICT_PATH,
-    FRENCH_PATH,
-    ENGLISH_PATH,
-  );
-  assertEquals(ladder, await getExpectedLadder());
-}
+  Deno.test("produces ladder with paths", async () => {
+    const hunalign = await ClassDenoHunalign.createWithWasmPath(wasmPath);
+    const ladder = await hunalign.runWithPaths(
+      DICT_PATH,
+      FRENCH_PATH,
+      ENGLISH_PATH,
+    );
+    assertEquals(ladder, await getExpectedLadder());
+  });
 
-export async function testLadderWithData(
-  ClassDenoHunalign: TypeOfClassDenoHunalign,
-  wasmPath: string
-) {
-  const [wasmBinary, dict, french, english] = await Promise.all([
-    wasmPath,
-    DICT_PATH,
-    FRENCH_PATH,
-    ENGLISH_PATH,
-  ].map((path) => Deno.readFile(path)));
-  const hunalign = await ClassDenoHunalign.createWithWasmBinary(wasmBinary);
-  const ladder = hunalign.run(dict, french, english);
-  assertEquals(ladder, await getExpectedLadder());
+  Deno.test("produces ladder with data", async () => {
+    const [wasmBinary, dict, french, english] = await Promise.all([
+      wasmPath,
+      DICT_PATH,
+      FRENCH_PATH,
+      ENGLISH_PATH,
+    ].map((path) => Deno.readFile(path)));
+    const hunalign = await ClassDenoHunalign.createWithWasmBinary(wasmBinary);
+    const ladder = hunalign.run(dict, french, english);
+    assertEquals(ladder, await getExpectedLadder());
+  });
 }
 
 let expectedLadder: Ladder | null = null;
