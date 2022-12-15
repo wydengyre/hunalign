@@ -13,6 +13,8 @@ clean:
 	# other stuff is built with the CPP makefile
 	rm -rf dist build/deno.lib.d.ts
 
+dist: dist/deno/hunalign.js dist/deno/hunalign.d.ts dist/deno/hunalign.wasm
+
 build/deno.lib.d.ts:
 	deno types > build/deno.lib.d.ts
 
