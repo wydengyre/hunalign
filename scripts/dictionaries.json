@@ -16,5 +16,11 @@
     "english",
     "https://github.com/apertium/apertium-fra-eng/raw/4ffd628f7dfdbe21fbb1cd40384e82adc4239fe6/apertium-fra-eng.fra-eng.dix",
     "x1NRlbV3gV9Eq0cGtWzurA82AT1MjdEn1zSzNfk61VY="
+  ],
+  [
+    "french",
+    "spanish",
+    "https://github.com/apertium/apertium-fr-es/raw/76cf97368901b7bbf74785f51180165fc933bc61/apertium-fr-es.fr-es.dix",
+    "yFclfJKxSTNIa/s+b9pI/MtoJ+lMHVU7iUVjooUq5yY="
   ]
 ]
