@@ -1,5 +1,5 @@
-import * as xml from "xml";
-import { z, ZodLiteral } from "zod";
+import { xml2js } from "xml2js";
+import { z } from "zod";
 import * as base64 from "std/encoding/base64.ts";
 import { basename, fromFileUrl, join } from "std/path/mod.ts";
 import dictionaryListJson from "./dictionaries.json" assert { type: "json" };
@@ -10,17 +10,15 @@ import { pooledMap } from "std/async/pool.ts";
 const DIGEST_ALGO = "sha-256";
 const MAX_SIMULTANEOUS_REQUESTS = 3; // hopefully stays under caps
 
-const languages = [
-  z.literal("english"),
-  z.literal("french"),
-  z.literal("italian"),
-  z.literal("spanish"),
-] as const;
-const languageSchema = z.union(languages);
-type Language = z.infer<typeof languageSchema>;
-type LanguagePair = [Language, Language];
-
+// consider keeping a cache of the downloaded xml
 async function main() {
+  const languages = [
+    z.literal("english"),
+    z.literal("french"),
+    z.literal("italian"),
+    z.literal("spanish"),
+  ] as const;
+  const languageSchema = z.union(languages);
   const dictionaryListJsonSchema = z.array(
     z.tuple([languageSchema, languageSchema, z.string().url(), z.string()]),
   );
@@ -28,21 +26,22 @@ async function main() {
   const dictionaryList: DictionaryList = await dictionaryListJsonSchema
     .parseAsync(dictionaryListJson);
 
-  const dictionaryMap: Map<LanguagePair, { url: URL; digest: string }> =
-    new Map(
-      dictionaryList.map((
-        [lang1, lang2, url, digest],
-      ) => [[lang1, lang2], { url: new URL(url), digest }]),
-    );
+  const dictionaryMap: Map<string, { url: URL; digest: string }> = new Map(
+    dictionaryList.map((
+      [lang1, lang2, url, digest],
+    ) => [JSON.stringify([lang1, lang2]), { url: new URL(url), digest }]),
+  );
 
-  const dictionariesIter: AsyncIterableIterator<[LanguagePair, ArrayBuffer]> =
+  const dictionariesIter: AsyncIterableIterator<[string, ArrayBuffer]> =
     pooledMap(
       MAX_SIMULTANEOUS_REQUESTS,
       dictionaryMap.entries(),
       downloadDictionary,
     );
 
-  const failedMatches: Map<LanguagePair, [string, string]> = new Map();
+  const failedMatches: Map<string, [string, string]> = new Map();
+  const dictionaries: Map<string, string> = new Map();
+  const td = new TextDecoder();
   for await (const [langs, data] of dictionariesIter) {
     const digest = await crypto.subtle.digest(DIGEST_ALGO, data);
     const digestB64 = base64.encode(digest);
@@ -50,9 +49,12 @@ async function main() {
     const expectedDigest = dictionaryMap.get(langs)!.digest;
     if (digestB64 !== expectedDigest) {
       failedMatches.set(langs, [digestB64, expectedDigest]);
+    } else {
+      dictionaries.set(langs, td.decode(data));
     }
   }
 
+  // consider an option to only warn, rather than fail, here
   if (failedMatches.size > 0) {
     const failures = Array.from(failedMatches.entries())
       .map(([[lang1, lang2], [digest, expectedDigest]]) =>
@@ -62,28 +64,40 @@ async function main() {
 
     throw `unmatched digests:\n${failures}`;
   }
+
+  for (const [langs, data] of dictionaries.entries()) {
+    console.log(langs);
+    try {
+      const [out1, out2] = process(data);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 }
 
 async function downloadDictionary(
-  [langs, { url }]: [LanguagePair, { url: URL }],
-): Promise<[LanguagePair, ArrayBuffer]> {
+  [langs, { url }]: [string, { url: URL }],
+): Promise<[string, ArrayBuffer]> {
+  console.log(`Downloading dictionary for ${langs}: ${url.toString()}`);
   const fetched = await fetch(url);
   const data = await fetched.arrayBuffer();
   return [langs, data];
 }
 
+const sectionObjSchema = z.object({
+  e: z.object({
+    p: z.object({
+      // the objects that end up here are confusing.
+      l: z.string().or(z.object({})).nullable(),
+      r: z.string().or(z.object({})).nullable(),
+    }).or(z.array(z.unknown())).optional(),
+    // looks like instead of p there can be i
+  }).array(),
+});
+
 const apertiumSchema = z.object({
   dictionary: z.object({
-    section: z.object({
-      e: z.object({
-        p: z.object({
-          // the objects that end up here are confusing.
-          l: z.string().or(z.object({})).nullable(),
-          r: z.string().or(z.object({})).nullable(),
-        }).or(z.array(z.unknown())).optional(),
-        // looks like instead of p there can be i
-      }).array(),
-    }),
+    section: sectionObjSchema.or(z.array(sectionObjSchema)),
   }),
 });
 
@@ -123,9 +137,10 @@ async function go(inPath: string, outPath1: string, outPath2: string) {
 // currently very naïve. we could handle inflection
 // https://wiki.apertium.org/wiki/Monodix_basics
 function process(dict: string): [string, string] {
-  const dictXml = xml.parse(dict);
+  const dictXml = xml2js(dict, { compact: true });
   const parsed = apertiumSchema.parse(dictXml);
-  const es = parsed.dictionary.section.e;
+  const section = parsed.dictionary.section;
+  const es = Array.isArray(section) ? section.flatMap(({ e }) => e) : section.e;
 
   // have had to really relax the schema and filter
   const defs: [string, string][] = es
