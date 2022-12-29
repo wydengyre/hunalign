@@ -136,7 +136,6 @@ function process(dict: string): [string, string] {
     ...new Set(defs.map((def) => JSON.stringify(def))),
   ]
     .map((jsonDef) => JSON.parse(jsonDef));
-  // TODO: look into locale-based sorting
   uniqueDefs.sort();
 
   const lToR = uniqueDefs.map(([l, r]) => `${l} @ ${r}`).join("\n");
