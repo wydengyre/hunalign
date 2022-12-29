@@ -4,15 +4,20 @@ import * as base64 from "std/encoding/base64.ts";
 import * as path from "std/path/mod.ts";
 import dictionaryListJson from "./dictionaries.json" assert { type: "json" };
 import { pooledMap } from "std/async/pool.ts";
-import {fromFileUrl} from "std/path/mod.ts";
+import { fromFileUrl } from "std/path/mod.ts";
 
 // written because apertium-dixtools explodes on my machine
+// it looks like on JRE 9+ it will throw an IllegalAccessError
+// Requiring a Java 7 JRE as a dependency feels nasty.
 
 const DICT_DIR_PATH_REL = "../dist/dictionaries";
+
+const TEMP_PATH_REL = "../temp";
 
 export const conf = {
   dictionaryDir: fromFileUrl(import.meta.resolve(DICT_DIR_PATH_REL)),
   digestAlgo: "sha-256",
+  downloadDir: fromFileUrl(import.meta.resolve(TEMP_PATH_REL)),
   // we want to avoid accidentally abusing the server
   maxSimultaneousRequests: 3,
 } as const;
@@ -94,6 +99,12 @@ async function downloadDictionary(
   console.log(`Downloading dictionary for ${langs}: ${url.toString()}`);
   const fetched = await fetch(url);
   const data = await fetched.arrayBuffer();
+
+  const urlPath = url.pathname.split("/");
+  const filename = urlPath[urlPath.length - 1];
+  const savePath = path.join(conf.downloadDir, filename);
+  console.log(`Saving dictionary to ${savePath}`);
+  await Deno.writeFile(savePath, new Uint8Array(data));
   return [langs, data];
 }
 

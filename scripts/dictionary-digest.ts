@@ -1,7 +1,7 @@
 // useful for dictionaries.json
 
 import * as base64 from "std/encoding/base64.ts";
-import {conf} from "./createdictionary.ts";
+import { conf } from "./createdictionary.ts";
 
 async function main() {
   const dictPath = Deno.args[0];
