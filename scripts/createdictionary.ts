@@ -22,7 +22,6 @@ export const conf = {
   maxSimultaneousRequests: 3,
 } as const;
 
-// consider keeping a cache of the downloaded xml
 async function main() {
   const languages = [
     z.literal("english"),
