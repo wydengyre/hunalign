@@ -13,7 +13,13 @@ clean:
 	# other stuff is built with the CPP makefile
 	rm -rf dist build/deno.lib.d.ts
 
-dist: dist/deno/hunalign.js dist/deno/hunalign.d.ts dist/deno/hunalign.wasm
+dist: dist/deno dist/dictionaries
+
+dist/deno: dist/deno/hunalign.js dist/deno/hunalign.d.ts dist/deno/hunalign.wasm
+
+dist/dictionaries:
+	mkdir -p $@
+	deno run --allow-net --allow-write=./ scripts/createdictionary.ts
 
 build/deno.lib.d.ts:
 	deno types > build/deno.lib.d.ts
