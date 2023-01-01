@@ -35,7 +35,7 @@ dist/deno/hunalign.js: deno/hunalign.ts
 dist/deno/hunalign.d.ts: deno/hunalign.ts build/deno.lib.d.ts
 	$(dir_guard)
 	#TODO: this will error until a tsc version with this is released: https://github.com/microsoft/TypeScript/pull/51669
-	-tsc $< build/deno.lib.d.ts --skipLibCheck --target esnext --declaration --emitDeclarationOnly --outFile $@
+	-tsc $< build/deno.lib.d.ts --skipLibCheck --target esnext --declaration --emitDeclarationOnly --outDir $(@D)
 
 dist/deno/hunalign.wasm: build/hunalign.wasm
 	$(copy)
@@ -48,7 +48,10 @@ dist/web/hunalign.js: ts/hunalign.ts
 
 dist/web/hunalign.d.ts: ts/hunalign.ts
 	$(dir_guard)
-	tsc $< --target esnext --declaration --emitDeclarationOnly --outFile $@
+	tsc $< --target esnext --declaration --emitDeclarationOnly --outDir $(@D)
 
 dist/web/hunalign.wasm: build/hunalign.wasm
 	$(copy)
+
+web/browser.test.js: web/browser.test.ts
+	tsc $< --target esnext
