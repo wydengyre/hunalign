@@ -54,4 +54,4 @@ dist/web/hunalign.wasm: build/hunalign.wasm
 	$(copy)
 
 web/browser.test.js: web/browser.test.ts
-	tsc $< --target esnext
+	tsc $< --target esnext --module esnext
