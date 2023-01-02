@@ -3,7 +3,7 @@ import { Ladder } from "../ts/hunalign.ts";
 import { assertEquals } from "std/testing/asserts.ts";
 
 const DICT_PATH = fromFileUrl(
-  import.meta.resolve("../test/hunapertium-eng-fra.dic"),
+  import.meta.resolve("../dist/dictionaries/english-french.dic"),
 );
 const FRENCH_PATH = fromFileUrl(
   import.meta.resolve("../test/chapitre.sentences.txt"),
