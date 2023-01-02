@@ -111,8 +111,8 @@ const sectionObjSchema = z.object({
   e: z.object({
     p: z.object({
       // the objects that end up here are confusing.
-      l: z.string().or(z.object({})).nullable(),
-      r: z.string().or(z.object({})).nullable(),
+      l: z.object({_text: z.string().or(z.array(z.string()))}).partial().nullable(),
+      r: z.object({_text: z.string().or(z.array(z.string()))}).partial().nullable(),
     }).or(z.array(z.unknown())).optional(),
     // looks like instead of p there can be i
   }).array(),
@@ -126,7 +126,7 @@ const apertiumSchema = z.object({
 
 // currently very naïve. we could handle inflection
 // https://wiki.apertium.org/wiki/Monodix_basics
-function process(dict: string): [string, string] {
+export function process(dict: string): [string, string] {
   const dictXml = xml2js(dict, { compact: true });
   const parsed = apertiumSchema.parse(dictXml);
   const section = parsed.dictionary.section;
@@ -134,13 +134,17 @@ function process(dict: string): [string, string] {
 
   // have had to really relax the schema and filter
   const defs: [string, string][] = es
-    .filter((e): e is { p: { l: string; r: string } } =>
-      e.p !== undefined && !Array.isArray(e.p) && typeof e.p.l === "string" &&
-      typeof e.p.r === "string"
+    .filter((e): e is { p: { l: {_text: string}; r: {_text: string} } } =>
+      e.p !== undefined
+      && !Array.isArray(e.p)
+      && typeof e.p.l === "object"
+      && typeof e.p.l?._text !== "undefined"
+      && typeof e.p.r === "object"
+      && typeof e.p.r?._text !== "undefined"
     )
     .map((
       { p: { l, r } },
-    ) => [normalizeWord(l), normalizeWord(r)]);
+    ) => [normalizeWord(l._text), normalizeWord(r._text)]);
   // awfully inefficient and gross
   const uniqueDefs: [string, string][] = [
     ...new Set(defs.map((def) => JSON.stringify(def))),
@@ -155,9 +159,10 @@ function process(dict: string): [string, string] {
 
 // https://stackoverflow.com/a/5002161
 const HTML_TAG_RE = /<\/?[^>]+(>|$)/g;
-function normalizeWord(word: string): string {
+function normalizeWord(word: string | string[]): string {
+  const wordStr = typeof word === "string" ? word : word.join(" ");
   const SPACE = String.raw`<b/>`;
-  return word
+  return wordStr
     .replaceAll(SPACE, " ")
     .replaceAll(HTML_TAG_RE, "");
 }
