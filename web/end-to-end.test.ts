@@ -7,6 +7,7 @@ import { fromFileUrl } from "std/path/mod.ts";
 import { assertStrictEquals } from "std/testing/asserts.ts";
 
 const TEST_PAGE = "test.html";
+const SERVE_DIR = fromFileUrl(import.meta.resolve("./"));
 const LADDER_PATH = fromFileUrl(
   import.meta.resolve("./test/ladder.json"),
 );
@@ -29,7 +30,7 @@ Deno.test("end to end ladder production in browser", async () => {
   };
 
   console.error("starting server");
-  const handler = (req: Request) => serveDir(req);
+  const handler = (req: Request) => serveDir(req, {fsRoot: SERVE_DIR});
   const _servePromise = serve(handler, serveInit);
 
   const { hostname, port } = await listeningPromise;

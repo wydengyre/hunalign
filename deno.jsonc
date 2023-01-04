@@ -5,6 +5,7 @@
     "clean": "rm -rf dist/deno",
     "fmt": "deno fmt deno scripts ts web",
     "lint": "deno lint deno ts",
-    "test": "deno test --allow-read=. deno"
+    "test": "deno test --allow-read=. deno",
+    "test_web": "deno test --allow-net --allow-read --allow-write --allow-env --allow-run web/end-to-end.test.ts"
   }
 }
