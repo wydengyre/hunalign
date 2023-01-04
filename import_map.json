@@ -1,5 +1,6 @@
 {
   "imports": {
+    "puppeteer": "https://deno.land/x/puppeteer@16.2.0/mod.ts",
     "std/": "https://deno.land/std@0.170.0/",
     "xml": "https://deno.land/x/xml@2.0.4/mod.ts",
     "xml2js": "https://deno.land/x/xml2js@1.0.0/mod.ts",

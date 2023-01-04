@@ -111,8 +111,10 @@ const sectionObjSchema = z.object({
   e: z.object({
     p: z.object({
       // the objects that end up here are confusing.
-      l: z.object({_text: z.string().or(z.array(z.string()))}).partial().nullable(),
-      r: z.object({_text: z.string().or(z.array(z.string()))}).partial().nullable(),
+      l: z.object({ _text: z.string().or(z.array(z.string())) }).partial()
+        .nullable(),
+      r: z.object({ _text: z.string().or(z.array(z.string())) }).partial()
+        .nullable(),
     }).or(z.array(z.unknown())).optional(),
     // looks like instead of p there can be i
   }).array(),
@@ -134,13 +136,13 @@ export function process(dict: string): [string, string] {
 
   // have had to really relax the schema and filter
   const defs: [string, string][] = es
-    .filter((e): e is { p: { l: {_text: string}; r: {_text: string} } } =>
-      e.p !== undefined
-      && !Array.isArray(e.p)
-      && typeof e.p.l === "object"
-      && typeof e.p.l?._text !== "undefined"
-      && typeof e.p.r === "object"
-      && typeof e.p.r?._text !== "undefined"
+    .filter((e): e is { p: { l: { _text: string }; r: { _text: string } } } =>
+      e.p !== undefined &&
+      !Array.isArray(e.p) &&
+      typeof e.p.l === "object" &&
+      typeof e.p.l?._text !== "undefined" &&
+      typeof e.p.r === "object" &&
+      typeof e.p.r?._text !== "undefined"
     )
     .map((
       { p: { l, r } },
