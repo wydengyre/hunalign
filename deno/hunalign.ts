@@ -1,4 +1,5 @@
 import { Hunalign, Ladder } from "../ts/hunalign.ts";
+export type { Ladder, Rung } from "../ts/hunalign.ts";
 
 export class DenoHunalign {
   #hunalign: Hunalign;
