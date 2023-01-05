@@ -30,7 +30,7 @@ Deno.test("end to end ladder production in browser", async () => {
   };
 
   console.error("starting server");
-  const handler = (req: Request) => serveDir(req, {fsRoot: SERVE_DIR});
+  const handler = (req: Request) => serveDir(req, { fsRoot: SERVE_DIR });
   const _servePromise = serve(handler, serveInit);
 
   const { hostname, port } = await listeningPromise;
