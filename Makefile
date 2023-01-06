@@ -35,7 +35,10 @@ dist/deno/hunalign.js: deno/hunalign.ts
 dist/deno/hunalign.d.ts: deno/hunalign.ts build/deno.lib.d.ts
 	$(dir_guard)
 	#TODO: this will error until a tsc version with this is released: https://github.com/microsoft/TypeScript/pull/51669
+	# typescript 5.0.0 should support this: https://github.com/microsoft/TypeScript/issues/51362
 	-tsc $< build/deno.lib.d.ts --skipLibCheck --target esnext --declaration --emitDeclarationOnly --outDir $(@D)
+	# this is truly hideous, but hopefully typescript 5.0.0 will be our savior
+	deno run --allow-read=./ --allow-write=$@ scripts/bundle-deno-type-declarations.ts
 
 dist/deno/hunalign.wasm: build/hunalign.wasm
 	$(copy)
