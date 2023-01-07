@@ -1,6 +1,8 @@
 import { Hunalign, Ladder } from "../ts/hunalign.ts";
 export type { Ladder, Rung } from "../ts/hunalign.ts";
 
+// want to re-export DictionaryLoader, but need to wait to get it to work with .d.ts
+
 export class DenoHunalign {
   #hunalign: Hunalign;
 
