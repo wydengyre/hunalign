@@ -1,12 +1,14 @@
 import { fromFileUrl } from "std/path/mod.ts";
 
-const DECLARATION_FILE_PATH = fromFileUrl(import.meta.resolve("../dist/deno/hunalign.d.ts"));
+const DECLARATION_FILE_PATH = fromFileUrl(
+  import.meta.resolve("../dist/deno/hunalign.d.ts"),
+);
 const TYPES_FILE_PATH = fromFileUrl(import.meta.resolve("../ts/hunalign.ts"));
 
 async function main() {
   const [declarations, types] = await Promise.all([
     Deno.readTextFile(DECLARATION_FILE_PATH),
-    Deno.readTextFile(TYPES_FILE_PATH)
+    Deno.readTextFile(TYPES_FILE_PATH),
   ]);
 
   // kill first two lines of the declarations file, which are imports
@@ -21,7 +23,7 @@ async function main() {
     .filter((line) => line.startsWith("export type "))
     .join("\n");
 
-  const output = typeExports + "\n"+ declarationsWithoutImports;
+  const output = typeExports + "\n" + declarationsWithoutImports;
   await Deno.writeTextFile(DECLARATION_FILE_PATH, output);
 }
 

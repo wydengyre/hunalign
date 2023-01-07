@@ -1,10 +1,12 @@
 import { fromFileUrl } from "std/path/mod.ts";
 import { Ladder } from "../ts/hunalign.ts";
 import { assertEquals } from "std/testing/asserts.ts";
+import {DictionaryLoader} from "./dictionary.ts";
 
 const DICT_PATH = fromFileUrl(
   import.meta.resolve("../dist/dictionaries/english-french.dic"),
 );
+const DICT_DIR = fromFileUrl(import.meta.resolve("../dist/dictionaries"));
 const FRENCH_PATH = fromFileUrl(
   import.meta.resolve("../test/chapitre.sentences.txt"),
 );
@@ -34,14 +36,17 @@ type TypeOfInstanceDenoHunalign = {
   ) => Promise<Ladder>;
 };
 
+// TODO: send in a class for the dictionary loader as well?
 export function testsForResources(
   ClassDenoHunalign: TypeOfClassDenoHunalign,
   wasmPath: string,
 ) {
   Deno.test("produces ladder with paths", async () => {
+    const dictPath = (await DictionaryLoader.fromDirectoryPath(DICT_DIR))
+      .dictionaryPathForLanguages("french", "english");
     const hunalign = await ClassDenoHunalign.createWithWasmPath(wasmPath);
     const ladder = await hunalign.runWithPaths(
-      DICT_PATH,
+      dictPath,
       FRENCH_PATH,
       ENGLISH_PATH,
     );
@@ -49,9 +54,10 @@ export function testsForResources(
   });
 
   Deno.test("produces ladder with data", async () => {
-    const [wasmBinary, dict, french, english] = await Promise.all([
+    const dictLoader = await DictionaryLoader.fromDirectoryPath(DICT_DIR);
+    const dict = await dictLoader.dictionaryForLanguages("french", "english");
+    const [wasmBinary, french, english] = await Promise.all([
       wasmPath,
-      DICT_PATH,
       FRENCH_PATH,
       ENGLISH_PATH,
     ].map((path) => Deno.readFile(path)));
