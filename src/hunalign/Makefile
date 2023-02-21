@@ -9,7 +9,13 @@ dir_guard=@mkdir -p $(@D)
 SHELL = /bin/bash
 CXX = emcc
 CPPFLAGS = -O3 -ffast-math -funroll-loops -I ../include
-EMFLAGS = -sEXPORT_ES6 -sMODULARIZE -s 'EXPORT_NAME="mkHunalign"' -s NO_INVOKE_RUN -s -sEXPORTED_RUNTIME_METHODS=callMain,FS
+EMFLAGS =\
+  -sEXPORT_ES6\
+  -sMODULARIZE\
+  -s'EXPORT_NAME="mkHunalign"'\
+  -sNO_INVOKE_RUN\
+  -sALLOW_MEMORY_GROWTH\
+  -sEXPORTED_RUNTIME_METHODS=callMain,FS
 LIBS = -lstdc++
 RM = rm -f
 
