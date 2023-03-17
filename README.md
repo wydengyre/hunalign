@@ -13,8 +13,7 @@ What follows are the key modifications:
 
 - The `Makefile` has been altered to use `emcc` and output javascript and wasm.
 - The `ts` directory contains a typescript wrapper module to facilitate use.
-- The `deno` directory contains a Deno module to further facilitate use with the
-  [Deno](https://deno.land) runtime, along with tests.
+- The `deno` directory contains a Deno module for testing use with Deno.
 
 TODOs:
 - Web directory with tests
