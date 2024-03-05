@@ -6,7 +6,7 @@ default:
 clean:
     npm run clean
 
-ci: ci-lint typecheck build test
+ci: ci-lint build typecheck test
 
 ci-lint:
 	npm run ci-lint
