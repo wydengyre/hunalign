@@ -10,8 +10,10 @@ SHELL = /bin/bash
 CXX = emcc
 CPPFLAGS = -O3 -ffast-math -funroll-loops -I ../include
 EMFLAGS =\
+  -sENVIRONMENT=web,node,worker\
   -sEXPORT_ES6\
   -sMODULARIZE\
+  -sUSE_ES6_IMPORT_META\
   -s'EXPORT_NAME="mkHunalign"'\
   -sNO_INVOKE_RUN\
   -sALLOW_MEMORY_GROWTH\

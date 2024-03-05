@@ -1,0 +1,30 @@
+{
+  "name": "hunalign",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "npm run build-ts && npm run build-wasm",
+    "build-ts": "esbuild ts/hunalign.ts --bundle --sourcemap --format=esm --external:module --outfile=dist/hunalign.js",
+    "build-wasm": "mkdir -p dist && cp build/hunalign.wasm dist/hunalign.wasm",
+    "clean": "rm -rf dist build",
+    "ci-lint": "biome ci .",
+    "lint": "biome check --apply .",
+    "test": "npm run test-hunalign && npm run test-e2e && npm run test-web",
+    "test-hunalign": "tsx ts/hunalign.test.ts",
+    "test-e2e": "tsx ts/e2e.test.ts",
+    "test-web": "tsx ts/web.test.ts",
+    "typecheck": "npm run typecheck-lib && npm run typecheck-test",
+    "typecheck-lib": "tsc",
+    "typecheck-test": "tsc --project tsconfig.test.json"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@biomejs/biome": "1.5.3",
+    "@tsconfig/strictest": "2.0.3",
+    "@types/node": "20.11.24",
+    "puppeteer": "22.3.0",
+    "tsx": "4.7.1",
+    "typescript": "5.3.3"
+  }
+}
