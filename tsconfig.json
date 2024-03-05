@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": ["@tsconfig/strictest/tsconfig.json"],
+  "compilerOptions": {
+    "module": "nodenext",
+    "noEmit": true,
+    "allowJs": true,
+    "checkJs": false,
+    "types": [],
+  },
+  "include": ["ts/hunalign.ts"],
+}

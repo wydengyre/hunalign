@@ -13,15 +13,7 @@ What follows are the key modifications:
 
 - The `Makefile` has been altered to use `emcc` and output javascript and wasm.
 - The `ts` directory contains a typescript wrapper module to facilitate use.
-- The `deno` directory contains a Deno module for testing use with Deno.
-
-TODOs:
-- Web directory with tests
-- Optimization
-- Packaging and distribution
-- Build automation
-  - Fixed emscripten, etc. versions (maybe Docker)?
-
+- This root directory contains a `justfile`, `package.json`, etc. for building and testing.
 
 ### Introduction
 
