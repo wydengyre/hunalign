@@ -23,7 +23,7 @@ async function startServer() {
 
 	const htmlPath = path.join(__dirname, "test/web.html");
 	const browserTestJsPath = path.join(__dirname, "test/web.js");
-	const hunalignJsPath = path.join(root, "dist/hunalign.js");
+	const hunalignJsPath = path.join(root, "dist/index.js");
 	const hunalignWasmPath = path.join(root, "dist/hunalign.wasm");
 	const enPath = path.join(root, "examples/demo.en.stem");
 	const huPath = path.join(root, "examples/demo.hu.stem");

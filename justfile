@@ -4,6 +4,7 @@ default:
 	just --list --justfile {{justfile()}}
 
 clean:
+    rm -rf build
     npm run clean
 
 ci: ci-lint build typecheck test
