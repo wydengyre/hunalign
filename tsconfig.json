@@ -3,7 +3,9 @@
   "extends": ["@tsconfig/strictest/tsconfig.json"],
   "compilerOptions": {
     "module": "nodenext",
-    "noEmit": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "build",
     "allowJs": true,
     "checkJs": false,
     "types": [],
