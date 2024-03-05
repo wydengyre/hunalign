@@ -7,7 +7,7 @@ clean:
     rm -rf build
     npm run clean
 
-ci: ci-lint build typecheck test
+ci: ci-lint build test
 
 ci-lint:
 	npm run ci-lint
@@ -19,8 +19,6 @@ build:
     cd src/hunalign && make
     npm run build
 
-typecheck:
-    npm run typecheck
-
 test:
+    npm run typecheck-test
     npm run test
