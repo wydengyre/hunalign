@@ -1,6 +1,19 @@
 {
   "name": "@bitextual/hunalign",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "description": "Hunalign is a bilingual sentence aligner, useful for aligning parallel corpora.",
+  "author": "Dániel Varga",
+  "contributors": ["Matthew Leon <bitextual@wydengyre.com>"],
+  "keywords": ["nlp", "text-alignment", "machine-translation"],
+  "license": "LGPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wydengyre/hunalign"
+  },
+  "homepage": "https://github.com/wydengyre/hunalign#readme",
+  "bugs": {
+    "url": "https://github.com/yourusername/js-hunalign/issues"
+  },
   "scripts": {
     "build": "npm run build-ts && npm run build-ts-defs && npm run build-wasm",
     "build-ts": "esbuild ts/src/hunalign.ts --bundle --sourcemap --format=esm --external:module --outfile=dist/index.js",
@@ -12,8 +25,6 @@
     "test": "cd ts/test && npm run test",
     "typecheck-test": "cd ts/test && npm run typecheck"
   },
-  "author": "",
-  "license": "ISC",
   "type": "module",
   "types": "dist/index.d.ts",
   "files": [
