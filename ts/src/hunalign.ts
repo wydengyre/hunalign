@@ -1,4 +1,4 @@
-import mkHunalign from "../build/hunalign.js";
+import mkHunalign from "../../build/hunalign.js";
 
 export type { Hunalign, Ladder, Rung };
 export { create };

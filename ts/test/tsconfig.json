@@ -8,5 +8,5 @@
 		"checkJs": false,
 		"resolveJsonModule": true
 	},
-	"include": ["ts/*.test.ts", "ts/test/*.ts"],
+	"include": ["*.ts"],
 }
