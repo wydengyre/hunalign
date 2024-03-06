@@ -6,6 +6,7 @@ default:
 clean:
     rm -rf build
     npm run clean
+    cd src/hunalign && make clean
 
 ci: ci-lint build test
 
