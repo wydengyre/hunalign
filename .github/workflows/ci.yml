@@ -38,5 +38,7 @@ jobs:
           actions-cache-folder: 'emsdk-cache'
       - name: Install npm dependencies
         run: npm ci
+      - name: Install test npm dependencies
+        run: cd ts/test && npm ci
       - name: Build and test
         run: just ci

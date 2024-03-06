@@ -10,5 +10,7 @@
     "checkJs": false,
     "types": [],
   },
-  "include": ["ts/hunalign.ts"],
+  "include": [
+    "ts/src/hunalign.ts"
+  ],
 }

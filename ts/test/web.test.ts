@@ -6,7 +6,7 @@ import { after, before, test } from "node:test";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 import puppeteer, { Browser } from "puppeteer";
-import expected from "./test/expected.json" with { type: "json" };
+import expected from "./expected.json" with { type: "json" };
 
 before(startServer);
 before(startBrowser);
@@ -19,12 +19,16 @@ let server: http.Server | undefined;
 async function startServer() {
 	const __filename = fileURLToPath(import.meta.url);
 	const __dirname = dirname(__filename);
-	const root = dirname(__dirname);
+	const root = dirname(dirname(__dirname));
 
-	const htmlPath = path.join(__dirname, "test/web.html");
-	const browserTestJsPath = path.join(__dirname, "test/web.js");
-	const hunalignJsPath = path.join(root, "dist/index.js");
-	const hunalignWasmPath = path.join(root, "dist/hunalign.wasm");
+	const htmlPath = path.join(__dirname, "web.html");
+	const browserTestJsPath = path.join(__dirname, "web.js");
+	const hunalignJsPath = fileURLToPath(
+		import.meta.resolve("@bitextual/hunalign"),
+	);
+	const hunalignWasmPath = fileURLToPath(
+		import.meta.resolve("@bitextual/hunalign/hunalign.wasm"),
+	);
 	const enPath = path.join(root, "examples/demo.en.stem");
 	const huPath = path.join(root, "examples/demo.hu.stem");
 	const dicPath = path.join(root, "data/hu-en.dic");

@@ -4,3 +4,4 @@ node_modules
 src/**/*.o
 .idea
 dist
+*.tgz

@@ -1,0 +1,18 @@
+{
+  "name": "@bitextual/hunalign-test",
+  "private": "true",
+  "type": "module",
+  "scripts": {
+    "test": "npm run test-node && npm run test-web",
+    "test-node": "tsx node.test.ts",
+    "test-web": "tsx web.test.ts",
+    "typecheck": "tsc"
+  },
+  "devDependencies": {
+    "@tsconfig/strictest": "2.0.3",
+    "@types/node": "20.11.24",
+    "puppeteer": "22.4.0",
+    "tsx": "4.7.1",
+    "typescript": "5.3.3"
+  }
+}
