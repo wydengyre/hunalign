@@ -5,7 +5,7 @@ import path, { dirname } from "node:path";
 import { after, before, test } from "node:test";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
-import puppeteer, { Browser } from "puppeteer";
+import puppeteer, { type Browser } from "puppeteer";
 import expected from "./expected.json" with { type: "json" };
 
 before(startServer);
