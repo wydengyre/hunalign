@@ -45,8 +45,8 @@ function toRung(s: string): Rung {
 		throw `could not convert ${nums} to rung`;
 	}
 	return [
-		parseInt(nums[0] as string),
-		parseInt(nums[1] as string),
+		Number.parseInt(nums[0] as string),
+		Number.parseInt(nums[1] as string),
 		Number.parseFloat(nums[2] as string),
 	];
 }

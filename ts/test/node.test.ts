@@ -1,4 +1,4 @@
-import { strict as assert } from "assert";
+import { strict as assert } from "node:assert";
 import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { test } from "node:test";
