@@ -8,7 +8,7 @@
     "outDir": "build",
     "allowJs": true,
     "checkJs": false,
-    "types": [],
+    "types": ["emscripten"],
   },
   "include": [
     "ts/src/hunalign.ts"

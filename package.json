@@ -1,10 +1,16 @@
 {
   "name": "@bitextual/hunalign",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Hunalign is a bilingual sentence aligner, useful for aligning parallel corpora.",
   "author": "Dániel Varga",
-  "contributors": ["Matthew Leon <bitextual@wydengyre.com>"],
-  "keywords": ["nlp", "text-alignment", "machine-translation"],
+  "contributors": [
+    "Matthew Leon <bitextual@wydengyre.com>"
+  ],
+  "keywords": [
+    "nlp",
+    "text-alignment",
+    "machine-translation"
+  ],
   "license": "LGPL-3.0-only",
   "repository": {
     "type": "git",
@@ -38,6 +44,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.6.1",
     "@tsconfig/strictest": "2.0.3",
+    "@types/emscripten": "1.39.10",
     "esbuild": "0.20.1",
     "typescript": "5.4.2"
   }
