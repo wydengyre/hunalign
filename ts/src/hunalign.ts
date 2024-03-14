@@ -19,7 +19,8 @@ async function create(): Promise<Hunalign> {
 		printLog.push(text);
 	};
 
-	const module = await mkHunalign({ print });
+	const config: Partial<EmscriptenModule> = { print };
+	const module = await mkHunalign(config);
 
 	const run = (
 		dictionary: Uint8Array,
