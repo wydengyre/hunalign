@@ -3,7 +3,8 @@ import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { create as createHunalign } from "@bitextual/hunalign";
+import { align } from "@bitextual/hunalign";
+import type { Config } from "@bitextual/hunalign";
 import expected from "./expected.json" with { type: "json" };
 
 test("node hunalign", async () => {
@@ -12,12 +13,21 @@ test("node hunalign", async () => {
 	const sourcePath = resolve(root, "examples/demo.en.stem");
 	const targetPath = resolve(root, "examples/demo.hu.stem");
 	const dictPath = resolve(root, "data/hu-en.dic");
-	const [source, target, dict, hunalign] = await Promise.all([
+	const [source, target, dict] = await Promise.all([
 		readFile(sourcePath),
 		readFile(targetPath),
 		readFile(dictPath),
-		createHunalign(),
 	]);
-	const ladder = hunalign.run(dict, source, target);
+	const config: Config = {
+		dictionary: new Uint8Array(dict),
+		source: new Uint8Array(source),
+		target: new Uint8Array(target),
+	};
+
+	const ladder = []
+	const ladderGen = align(config);
+	for await (const rung of ladderGen) {
+		ladder.push(rung);
+	}
 	assert.deepStrictEqual(ladder, expected);
 });

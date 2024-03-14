@@ -8,9 +8,10 @@
     "outDir": "build",
     "allowJs": true,
     "checkJs": false,
-    "types": [],
+    "types": ["emscripten"],
   },
   "include": [
-    "ts/src/hunalign.ts"
+    "ts/src/index.ts",
+    "ts/src/worker.ts"
   ],
 }

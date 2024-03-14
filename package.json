@@ -1,10 +1,16 @@
 {
   "name": "@bitextual/hunalign",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Hunalign is a bilingual sentence aligner, useful for aligning parallel corpora.",
   "author": "Dániel Varga",
-  "contributors": ["Matthew Leon <bitextual@wydengyre.com>"],
-  "keywords": ["nlp", "text-alignment", "machine-translation"],
+  "contributors": [
+    "Matthew Leon <bitextual@wydengyre.com>"
+  ],
+  "keywords": [
+    "nlp",
+    "text-alignment",
+    "machine-translation"
+  ],
   "license": "LGPL-3.0-only",
   "repository": {
     "type": "git",
@@ -15,9 +21,10 @@
     "url": "https://github.com/yourusername/js-hunalign/issues"
   },
   "scripts": {
-    "build": "npm run build-ts && npm run build-ts-defs && npm run build-wasm",
-    "build-ts": "esbuild ts/src/hunalign.ts --bundle --sourcemap --format=esm --external:module --outfile=dist/index.js",
-    "build-ts-defs": "tsc && cp build/ts/src/hunalign.d.ts dist/index.d.ts",
+    "build": "npm run build-ts && npm run build-ts-defs && npm run build-worker && npm run build-wasm",
+    "build-worker": "esbuild ts/src/worker.ts --bundle --sourcemap --format=esm --external:module --target=es2022 --outfile=dist/worker.js",
+    "build-ts": "esbuild ts/src/index.ts --bundle --sourcemap --format=esm --external:module --target=es2022 --outfile=dist/index.js",
+    "build-ts-defs": "tsc && cp build/ts/src/index.d.ts dist/index.d.ts && cp build/ts/src/worker.d.ts dist/worker.d.ts",
     "build-wasm": "mkdir -p dist && cp build/hunalign.wasm dist/hunalign.wasm",
     "clean": "rm -rf dist",
     "ci-lint": "biome ci .",
@@ -33,12 +40,17 @@
   "exports": {
     ".": "./dist/index.js",
     "./index.js": "./dist/index.js",
+    "./worker.js": "./dist/worker.js",
     "./hunalign.wasm": "./dist/hunalign.wasm"
   },
   "devDependencies": {
     "@biomejs/biome": "1.6.1",
     "@tsconfig/strictest": "2.0.3",
+    "@types/emscripten": "1.39.10",
     "esbuild": "0.20.1",
     "typescript": "5.4.2"
+  },
+  "dependencies": {
+    "comlink": "^4.4.1"
   }
 }
