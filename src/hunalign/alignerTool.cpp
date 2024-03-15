@@ -42,8 +42,8 @@ public:
 
   enum RealignType { NoRealign, ModelOneRealign, FineTranslationRealign, UpgradeDictRealign };
 
-  AlignParameters() : justSentenceIds(true), 
-    justBisentences(false), cautiousMode(false),
+  AlignParameters() : justSentenceIds(true),
+    justBisentences(false),
     realignType(NoRealign),
     qualityThreshold(-100000),
     postprocessTrailQualityThreshold(-1),
@@ -56,7 +56,6 @@ public:
   bool justSentenceIds;
   bool justBisentences;
 
-  bool cautiousMode;
   double postprocessTrailQualityThreshold;
   double postprocessTrailStartAndEndQualityThreshold;
   double postprocessTrailByTopologyQualityThreshold;
@@ -69,7 +68,7 @@ public:
   int minCooccForDictBuild;
 
   bool utfCharCountingMode;
-  
+
   std::string autoDictionaryDumpFilename; // Empty string means do not dump.
 };
 
@@ -135,36 +134,36 @@ double globalScoreOfTrail( const Trail& trail, const AlignMatrix& dynMatrix,
   return trailScoresInterval(0,trail.size()-1);
 
 //x   const double badScore = -1000;
-//x 
+//x
 //x   double scoreSum(0);
 //x   int itemNum(0);
-//x 
+//x
 //x   TrailScores trailScores(trail,dynMatrix);
-//x 
+//x
 //x   if (trail.size()<=2)
 //x     return badScore;
-//x 
+//x
 //x   for ( int pos=0; pos<trail.size()-1; ++pos )
 //x   {
 //x     int huDiff = trail[pos+1].first  -trail[pos].first  ;
 //x     int enDiff = trail[pos+1].second -trail[pos].second ;
-//x 
+//x
 //x     if ( (huDiff>2) || (enDiff>2) )
 //x     {
 //x       std::cerr << "trailScores for segment lengths of more than two is currently unimplemented." << std::endl;
 //x       throw "internal error";
 //x     }
-//x 
+//x
 //x     bool huP = ( (huDiff==1) && isParagraph( huSentenceListGarbled[trail[pos].first ].words ) );
 //x     bool enP = ( (enDiff==1) && isParagraph( enSentenceListGarbled[trail[pos].second].words ) );
-//x 
+//x
 //x     if ( (!huP) && (!enP) )
 //x     {
 //x       scoreSum += trailScores(pos);
 //x       ++itemNum;
 //x     }
 //x   }
-//x 
+//x
 //x   if (itemNum==0)
 //x   {
 //x     return badScore;
@@ -461,14 +460,6 @@ double alignerToolWithObjects( const DictionaryItems& dictionary,
     std::cerr << "Trail spaced out by sentence length." << std::endl;
   }
 
-  // In cautious mode, auto-aligned rundles are thrown away if
-  // their left or right neighbour holes are not one-to-one.
-  if (alignParameters.cautiousMode)
-  {
-    cautiouslyFilterTrail( bestTrail );
-    std::cerr << "Trail filtered by topology." << std::endl;
-  }
-
   globalQuality = globalScoreOfTrail( bestTrail, dynMatrix,
                                       huSentenceListGarbled, enSentenceListGarbled );
 
@@ -606,13 +597,13 @@ void alignerToolWithFilenames( const DictionaryItems& dictionary,
 //x   // 1984 elso fejezet.
 //x   huSentenceListPretty.resize(2030);
 //x   enSentenceList      .resize(2026);
-//x 
+//x
 //x   // 1984 elso ket alfejezet.
 //x   huSentenceListPretty.resize(498);
 //x   enSentenceList      .resize(495);
-//x 
+//x
 //x //x   // enSentenceList.erase( enSentenceList.begin(), enSentenceList.begin()+50 );
-  
+
   if (outputFilename.empty())
   {
     double globalQuality = alignerToolWithObjects
@@ -665,7 +656,7 @@ int main_alignerTool(int argC, char* argV[])
     args.read( argC, argV, remains );
 
     AlignParameters alignParameters;
-    
+
     if (args.getSwitchCompact("text"))
     {
       alignParameters.justSentenceIds = false;
@@ -674,11 +665,6 @@ int main_alignerTool(int argC, char* argV[])
     if (args.getSwitchCompact("bisent"))
     {
       alignParameters.justBisentences = true;
-    }
-
-    if (args.getSwitchCompact("cautious"))
-    {
-      alignParameters.cautiousMode = true;
     }
 
     alignParameters.utfCharCountingMode = true;
@@ -826,7 +812,7 @@ int main_alignerTool(int argC, char* argV[])
     {
       const char* batchFilename = remains[1] ;
       std::ifstream bis(batchFilename);
-      
+
       while (bis.good()&&!bis.eof())
       {
         std::string line;
