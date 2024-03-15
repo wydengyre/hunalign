@@ -13,13 +13,17 @@ type Hunalign = {
 	) => Ladder;
 };
 
-async function create(): Promise<Hunalign> {
+async function create(conf?: {
+	printErr: (str: string) => void;
+}): Promise<Hunalign> {
 	const printLog: string[] = [];
 	const print = (text: string) => {
 		printLog.push(text);
 	};
 
-	const config: Partial<EmscriptenModule> = { print };
+	const printErr = conf?.printErr || console.error;
+
+	const config: Partial<EmscriptenModule> = { print, printErr };
 	const module = await mkHunalign(config);
 
 	const run = (
