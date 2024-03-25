@@ -10,7 +10,7 @@ SHELL = /bin/bash
 CXX = emcc
 CPPFLAGS = -O3 -ffast-math -funroll-loops -I ../include
 EMFLAGS =\
-  -sENVIRONMENT=web,node,worker\
+  -sENVIRONMENT=web\
   -sEXPORT_ES6\
   -sMODULARIZE\
   -sUSE_ES6_IMPORT_META\
