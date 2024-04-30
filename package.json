@@ -1,6 +1,6 @@
 {
   "name": "@bitextual/hunalign",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Hunalign is a bilingual sentence aligner, useful for aligning parallel corpora.",
   "author": "Dániel Varga",
   "contributors": [
