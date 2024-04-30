@@ -20,7 +20,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org/'
       - uses: mymindstorm/setup-emsdk@6ab9eb1bda2574c4ddb79809fc9247783eaf9021 # v14
         with:
-          version: 3.1.55
+          version: 3.1.58
           actions-cache-folder: 'emsdk-cache'
       - name: Install dependencies
         run: npm ci
