@@ -45,7 +45,7 @@
     "@biomejs/biome": "1.7.3",
     "@tsconfig/strictest": "2.0.5",
     "@types/emscripten": "1.39.12",
-    "esbuild": "0.21.3",
+    "esbuild": "0.21.4",
     "typescript": "5.4.5"
   }
 }
