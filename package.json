@@ -42,7 +42,7 @@
     "./hunalign.wasm": "./dist/hunalign.wasm"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.7.3",
+    "@biomejs/biome": "1.8.0",
     "@tsconfig/strictest": "2.0.5",
     "@types/emscripten": "1.39.13",
     "esbuild": "0.21.4",
