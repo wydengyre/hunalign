@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@tsconfig/strictest": "2.0.5",
-    "@types/node": "20.14.10",
+    "@types/node": "20.14.11",
     "puppeteer": "22.13.1",
     "tsx": "4.16.2",
     "typescript": "5.5.3"
