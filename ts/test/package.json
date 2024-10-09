@@ -13,6 +13,6 @@
     "@types/node": "22.7.5",
     "puppeteer": "23.5.1",
     "tsx": "4.19.1",
-    "typescript": "5.6.2"
+    "typescript": "5.6.3"
   }
 }
